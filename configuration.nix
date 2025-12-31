@@ -51,6 +51,7 @@ in
     fastfetch
     nodejs
     gh
+    claude-code
   ];
   environment.variables = {
     TERM = "xterm-256color";
