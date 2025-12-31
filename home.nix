@@ -11,6 +11,7 @@
     pnpm
     gh
     claude-code
+    go
   ];
 
   programs.zsh = {
