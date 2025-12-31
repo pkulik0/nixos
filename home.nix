@@ -12,6 +12,31 @@
     claude-code
   ];
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+
+    oh-my-zsh = {
+      enable = true;
+      theme = "alanpeabody";
+      plugins = [
+        "git"
+        "sudo"
+        "docker"
+        "docker-compose"
+        "kubectl"
+      ];
+    };
+
+    shellAliases = {
+      e = "exit";
+      c = "clear";
+
+      gp = "git push";
+      gpf = "git push -f";
+    };
+  };
+
   programs.git = {
     enable = true;
     settings = {

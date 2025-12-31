@@ -34,6 +34,8 @@ in
     variant = "";
   };
 
+  programs.zsh.enable = true;
+
   users.users.pk = {
     isNormalUser = true;
     description = "pk";
@@ -41,6 +43,7 @@ in
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
     ];
+    shell = pkgs.zsh;
     packages = with pkgs; [];
   };
 
