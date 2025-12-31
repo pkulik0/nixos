@@ -8,6 +8,7 @@
   home.packages = with pkgs; [
     fastfetch
     nodejs
+    pnpm
     gh
     claude-code
   ];
