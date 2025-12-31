@@ -13,6 +13,10 @@
     pnpm
     go
     python3
+    clang
+    clang-tools
+    ninja
+    cmake
   ];
 
   programs.zsh = {
