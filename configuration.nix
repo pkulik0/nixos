@@ -50,6 +50,7 @@ in
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     git
+    htop
   ];
   environment.variables = {
     TERM = "xterm-256color";
