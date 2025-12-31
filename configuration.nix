@@ -35,6 +35,7 @@ in
   };
 
   programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
 
   users.users.pk = {
     isNormalUser = true;
