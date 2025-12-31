@@ -3,6 +3,15 @@
 {
   home.stateVersion = "25.11";
 
+  nixpkgs.config.allowUnfree = true;
+
+  home.packages = with pkgs; [
+    fastfetch
+    nodejs
+    gh
+    claude-code
+  ];
+
   programs.git = {
     enable = true;
     settings = {

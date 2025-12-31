@@ -46,12 +46,7 @@ in
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    neovim
     git
-    fastfetch
-    nodejs
-    gh
-    claude-code
   ];
   environment.variables = {
     TERM = "xterm-256color";
