@@ -7,10 +7,10 @@
 
   home.packages = with pkgs; [
     fastfetch
-    nodejs
-    pnpm
     gh
     claude-code
+    nodejs
+    pnpm
     go
   ];
 
