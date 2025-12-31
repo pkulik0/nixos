@@ -12,6 +12,7 @@
     nodejs
     pnpm
     go
+    python3
   ];
 
   programs.zsh = {
