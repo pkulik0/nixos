@@ -219,6 +219,14 @@ in
           require('Comment').setup {}
         '';
       }
+      {
+        plugin = github-nvim-theme;
+        type = "lua";
+        config = ''
+          require('github-theme').setup {}
+          vim.cmd('colorscheme github_dark_default')
+        '';
+      }
     ];
   };
 }
