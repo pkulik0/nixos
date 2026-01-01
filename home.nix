@@ -38,6 +38,12 @@ in
     black
     nodePackages.prettier
     nixpkgs-fmt
+    gofumpt
+    golines
+    gomodifytags
+    gotests
+    impl
+    iferr
     ## Linters
     nodePackages.eslint
     ruff
@@ -154,6 +160,7 @@ in
         config = ''
           require('neo-tree').setup {}
           vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { silent = true })
+          vim.keymap.set('n', '<leader>o', ':Neotree focus<CR>', { silent = true })
         '';
       }
       {
@@ -218,7 +225,6 @@ in
               python = { "black" },
               javascript = { "prettier" },
               typescript = { "prettier" },
-              go = { "gofmt" },
               rust = { "rustfmt" },
               nix = { "nixpkgs_fmt" },
             },
@@ -240,6 +246,103 @@ in
         type = "lua";
         config = ''
           require('Comment').setup {}
+        '';
+      }
+      {
+        plugin = go-nvim;
+        type = "lua";
+        config = ''
+          require('go').setup({
+            -- Disable default lsp config
+            lsp_cfg = false,
+            lsp_gofumpt = true,
+            lsp_on_attach = false, 
+            lsp_keymaps = false,
+
+            -- Formatting
+            goimports = 'gopls',
+            gofmt = 'gopls',
+            max_line_len = 120,
+
+            -- Tags
+            tag_transform = false,
+            tag_options = 'json=omitempty',
+
+            -- Testing
+            test_runner = 'go',
+            verbose_tests = true,
+
+            -- DAP debugging
+            dap_debug = true,
+            dap_debug_keymap = false, -- We define our own keymaps
+            dap_debug_gui = true,
+            dap_debug_vt = { enabled = true, enabled_commands = true, all_frames = true },
+
+            -- Linting
+            golangci_lint = {
+              default = 'standard',
+              severity = vim.diagnostic.severity.WARN,
+            },
+
+            -- Comments
+            comment_placeholder = '   ',
+
+            -- Icons
+            icons = { breakpoint = '🔴', currentpos = '👉' },
+
+            -- Textobjects
+            textobjects = true,
+
+            -- LuaSnip support
+            luasnip = false,
+          })
+
+          -- Auto-format on save with goimports
+          local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = "*.go",
+            callback = function()
+              require('go.format').goimports()
+            end,
+            group = format_sync_grp,
+          })
+
+          -- Key mappings for Go
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = "go",
+            callback = function()
+              -- Test commands
+              vim.keymap.set('n', '<leader>gt', ':GoTest<CR>', { desc = 'Go: Test', buffer = true })
+              vim.keymap.set('n', '<leader>gT', ':GoTestFunc<CR>', { desc = 'Go: Test Function', buffer = true })
+              vim.keymap.set('n', '<leader>gc', ':GoCoverage<CR>', { desc = 'Go: Coverage', buffer = true })
+
+              -- Code generation
+              vim.keymap.set('n', '<leader>ga', ':GoAddTest<CR>', { desc = 'Go: Add Test', buffer = true })
+              vim.keymap.set('n', '<leader>gi', ':GoImpl<CR>', { desc = 'Go: Implement Interface', buffer = true })
+              vim.keymap.set('n', '<leader>gs', ':GoFillStruct<CR>', { desc = 'Go: Fill Struct', buffer = true })
+              vim.keymap.set('n', '<leader>ge', ':GoIfErr<CR>', { desc = 'Go: Add if err', buffer = true })
+
+              -- Tags
+              vim.keymap.set('n', '<leader>gj', ':GoAddTag json<CR>', { desc = 'Go: Add JSON tags', buffer = true })
+              vim.keymap.set('n', '<leader>gJ', ':GoRmTag json<CR>', { desc = 'Go: Remove JSON tags', buffer = true })
+
+              -- Navigation
+              vim.keymap.set('n', '<leader>gA', ':GoAlt<CR>', { desc = 'Go: Alternate file', buffer = true })
+
+              -- Debugging
+              vim.keymap.set('n', '<leader>gd', ':GoDebug<CR>', { desc = 'Go: Start Debug', buffer = true })
+              vim.keymap.set('n', '<leader>gD', ':GoDebug -t<CR>', { desc = 'Go: Debug Test', buffer = true })
+              vim.keymap.set('n', '<leader>gb', ':GoBreakToggle<CR>', { desc = 'Go: Toggle Breakpoint', buffer = true })
+
+              -- Build/Run
+              vim.keymap.set('n', '<leader>gr', ':GoRun<CR>', { desc = 'Go: Run', buffer = true })
+              vim.keymap.set('n', '<leader>gB', ':GoBuild<CR>', { desc = 'Go: Build', buffer = true })
+
+              -- Misc
+              vim.keymap.set('n', '<leader>gm', ':GoModTidy<CR>', { desc = 'Go: Mod Tidy', buffer = true })
+              vim.keymap.set('n', '<leader>gl', ':GoLint<CR>', { desc = 'Go: Lint', buffer = true })
+            end,
+          })
         '';
       }
       {
@@ -284,37 +387,6 @@ in
               name = 'Launch file',
               program = "''${file}",
               pythonPath = '${pkgs.python3}/bin/python',
-            },
-          }
-
-          -- Go
-          dap.adapters.go = {
-            type = 'server',
-            port = "''${port}",
-            executable = {
-              command = '${pkgs.delve}/bin/dlv',
-              args = { 'dap', '-l', '127.0.0.1:''${port}' },
-            },
-          }
-          dap.configurations.go = {
-            {
-              type = 'go',
-              name = 'Debug',
-              request = 'launch',
-              program = "''${file}",
-            },
-            {
-              type = 'go',
-              name = 'Debug Package',
-              request = 'launch',
-              program = "''${fileDirname}",
-            },
-            {
-              type = 'go',
-              name = 'Debug test',
-              request = 'launch',
-              mode = 'test',
-              program = "''${file}",
             },
           }
 
