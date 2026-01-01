@@ -204,6 +204,13 @@ in
           require('nvim-autopairs').setup {}
         '';
       }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''
+          require('gitsigns').setup {}
+        '';
+      }
     ];
   };
 }
