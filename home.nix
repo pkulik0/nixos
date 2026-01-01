@@ -192,15 +192,7 @@ in
         plugin = blink-cmp;
         type = "lua";
         config = ''
-          require('blink-cmp').setup {
-            completion = {
-              accept = {
-                auto_brackets = {
-                  enabled = true
-                }
-              }
-            }
-          }
+          require('blink-cmp').setup{}
         '';
       }
       {
@@ -228,6 +220,10 @@ in
               rust = { "rustfmt" },
               nix = { "nixpkgs_fmt" },
             },
+            format_on_save = {
+              timeout_ms = 500,
+              lsp_fallback = true,
+            },
           }
           vim.keymap.set('n', '<leader>cf', function()
             require('conform').format({ async = true, lsp_fallback = true })
@@ -246,6 +242,13 @@ in
         type = "lua";
         config = ''
           require('Comment').setup {}
+        '';
+      }
+      {
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = ''
+          require('nvim-autopairs').setup {}
         '';
       }
       {
