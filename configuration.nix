@@ -54,6 +54,7 @@ in
   environment.systemPackages = with pkgs; [
     git
     htop
+    ripgrep
   ];
   environment.variables = {
     TERM = "xterm-256color";
