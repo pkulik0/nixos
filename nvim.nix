@@ -8,6 +8,7 @@
     gopls
     rust-analyzer
     nil
+    zls
     # Formatters
     stylua
     black
@@ -109,7 +110,7 @@
           local capabilities = require('blink.cmp').get_lsp_capabilities()
 
           -- Configure LSPs using vim.lsp.config nvim 0.11+
-          local servers = {'lua_ls', 'pyright', 'gopls', 'clangd', 'nil_ls'}
+          local servers = {'lua_ls', 'pyright', 'gopls', 'clangd', 'nil_ls', 'zls'}
           for _, server in ipairs(servers) do
             vim.lsp.config[server] = { capabilities = capabilities }
           end
@@ -137,7 +138,16 @@
         plugin = blink-cmp;
         type = "lua";
         config = ''
-          require('blink-cmp').setup{}
+          require('blink-cmp').setup{
+            keymap = {
+              preset = 'default',
+              ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+              ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+              ['<CR>'] = { 'accept', 'fallback' },
+              ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+              ['<C-e>'] = { 'hide', 'fallback' },
+            }
+          }
         '';
       }
       {

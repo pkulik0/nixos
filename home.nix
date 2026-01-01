@@ -31,6 +31,7 @@ in
     go
     python3
     rust-bin.nightly.latest.default
+    zig
   ];
 
   programs.zsh = {
