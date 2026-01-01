@@ -1,14 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
-let 
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz";
-in
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      (import "${home-manager}/nixos")
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -45,7 +40,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -61,7 +56,7 @@ in
     TERM = "xterm-256color";
     EDITOR = "nvim";
   };
-  
+
   security.sudo.wheelNeedsPassword = false;
 
   services.openssh = {
@@ -82,5 +77,4 @@ in
   # networking.firewall.enable = false;
 
   system.stateVersion = "25.11";
-  home-manager.users.pk = import ./home.nix;
 }

@@ -1,16 +1,11 @@
 { pkgs, ... }:
-let
-  rust-overlay = import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/6d14586a5917a1ec7f045ac97e6d00c68ea5d9f3.tar.gz");
-in
+
 {
   imports = [
     ./nvim.nix
   ];
 
   home.stateVersion = "25.11";
-
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [ rust-overlay ];
 
   home.packages = with pkgs; [
     fastfetch
