@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ pkgs, ...}:
 let
   rust-overlay = import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/6d14586a5917a1ec7f045ac97e6d00c68ea5d9f3.tar.gz");
 in
@@ -12,15 +12,32 @@ in
     fastfetch
     gh
     claude-code
+
+    # Programming languages & tools
+    ## JS / TS
     nodejs
     pnpm
-    go
-    python3
+    ## C/C++
     clang
-    clang-tools
     ninja
     cmake
+    ## Others
+    go
+    python3
     rust-bin.nightly.latest.default
+    ## Language servers
+    clang-tools
+    lua-language-server
+    pyright
+    nodePackages.typescript-language-server
+    gopls
+    rust-analyzer
+    nil
+    ## Formatters
+    stylua
+    black
+    nodePackages.prettier
+    nixpkgs-fmt
   ];
 
   programs.zsh = {
@@ -117,6 +134,31 @@ in
         '';
       }
       {
+        plugin = nvim-lspconfig;
+        type = "lua";
+        config = ''
+          local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+          -- Configure LSPs using vim.lsp.config nvim 0.11+
+          local servers = {'lua_ls', 'pyright', 'ts_ls', 'gopls', 'rust_analyzer', 'clangd', 'nil_ls'}
+          for _, server in ipairs(servers) do
+            vim.lsp.config[server] = { capabilities = capabilities }
+          end
+          vim.lsp.enable(servers)
+
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = 'Go to references' })
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover documentation' })
+          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
+          vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename' })
+
+          vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Show diagnostics' })
+          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+          vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostics to loclist' })
+        '';
+      }
+      {
         plugin = blink-cmp;
         type = "lua";
         config = ''
@@ -133,6 +175,26 @@ in
           vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
           vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
           vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
+        '';
+      }
+      {
+        plugin = conform-nvim;
+        type = "lua";
+        config = ''
+          require('conform').setup {
+            formatters_by_ft = {
+              lua = { "stylua" },
+              python = { "black" },
+              javascript = { "prettier" },
+              typescript = { "prettier" },
+              go = { "gofmt" },
+              rust = { "rustfmt" },
+              nix = { "nixpkgs_fmt" },
+            },
+          }
+          vim.keymap.set('n', '<leader>cf', function()
+            require('conform').format({ async = true, lsp_fallback = true })
+          end, { desc = 'Format buffer' })
         '';
       }
     ];
