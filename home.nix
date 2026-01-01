@@ -170,7 +170,7 @@ in
           local capabilities = require('blink.cmp').get_lsp_capabilities()
 
           -- Configure LSPs using vim.lsp.config nvim 0.11+
-          local servers = {'lua_ls', 'pyright', 'ts_ls', 'gopls', 'rust_analyzer', 'clangd', 'nil_ls'}
+          local servers = {'lua_ls', 'pyright', 'ts_ls', 'gopls', 'clangd', 'nil_ls'}
           for _, server in ipairs(servers) do
             vim.lsp.config[server] = { capabilities = capabilities }
           end
@@ -335,8 +335,8 @@ in
               vim.keymap.set('n', '<leader>gb', ':GoBreakToggle<CR>', { desc = 'Go: Toggle Breakpoint', buffer = true })
 
               -- Build/Run
-              vim.keymap.set('n', '<leader>gr', ':GoRun<CR>', { desc = 'Go: Run', buffer = true })
-              vim.keymap.set('n', '<leader>gB', ':GoBuild<CR>', { desc = 'Go: Build', buffer = true })
+              vim.keymap.set('n', '<leader>r', ':GoRun<CR>', { desc = 'Go: Run', buffer = true })
+              vim.keymap.set('n', '<leader>B', ':GoBuild<CR>', { desc = 'Go: Build', buffer = true })
 
               -- Misc
               vim.keymap.set('n', '<leader>gm', ':GoModTidy<CR>', { desc = 'Go: Mod Tidy', buffer = true })
@@ -475,6 +475,29 @@ in
 
           -- Toggle UI manually
           vim.keymap.set('n', '<leader>du', dapui.toggle, { desc = 'Debug: Toggle UI' })
+        '';
+      }
+      {
+        plugin = rustaceanvim;
+        type = "lua";
+        config = ''
+          vim.g.rustaceanvim = {
+            server = {
+              capabilities = require('blink.cmp').get_lsp_capabilities(),
+            },
+          }
+
+          -- Key mappings for Rust
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = "rust",
+            callback = function()
+              -- Build/Run
+              vim.keymap.set('n', '<leader>r', ':split | terminal cargo run<CR>', { desc = 'Rust: Run', buffer = true })
+              vim.keymap.set('n', '<leader>B', ':split | terminal cargo build<CR>', { desc = 'Rust: Build', buffer = true })
+              vim.keymap.set('n', '<leader>t', ':split | terminal cargo test<CR>', { desc = 'Rust: Test', buffer = true })
+              vim.keymap.set('n', '<leader>c', ':split | terminal cargo check<CR>', { desc = 'Rust: Check', buffer = true })
+            end,
+          })
         '';
       }
       {
