@@ -212,6 +212,13 @@ in
           require('gitsigns').setup {}
         '';
       }
+      {
+        plugin = comment-nvim;
+        type = "lua";
+        config = ''
+          require('Comment').setup {}
+        '';
+      }
     ];
   };
 }
