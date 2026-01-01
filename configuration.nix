@@ -55,6 +55,7 @@ in
     git
     htop
     ripgrep
+    unzip
   ];
   environment.variables = {
     TERM = "xterm-256color";

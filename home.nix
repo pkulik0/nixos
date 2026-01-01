@@ -197,6 +197,13 @@ in
           end, { desc = 'Format buffer' })
         '';
       }
+      {
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = ''
+          require('nvim-autopairs').setup {}
+        '';
+      }
     ];
   };
 }
