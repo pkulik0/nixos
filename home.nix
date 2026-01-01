@@ -96,6 +96,19 @@ in
       plenary-nvim
       nui-nvim
       {
+        plugin = lualine-nvim;
+        type = "lua";
+        config = ''
+          require('lualine').setup {
+            options = {
+              theme = 'auto',
+              component_separators = { left = "", right = ""},
+              section_separators = { left = "", right = ""},
+            },
+          }
+        '';
+      }
+      {
         plugin = neo-tree-nvim;
         type = "lua";
         config = ''
