@@ -64,5 +64,45 @@ in
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    extraLuaConfig = ''
+      vim.g.mapleader = " "
+      vim.g.maplocalleader = " "
+    '';
+
+    plugins = with pkgs.vimPlugins; [
+      {
+        plugin = nvim-treesitter.withAllGrammars;
+        type = "lua";
+        config = ''
+          require('nvim-treesitter.configs').setup {
+            highlight = {
+              enable = true,
+            },
+            indent = {
+              enable = true,
+            },
+          }
+        '';
+      }
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          require('which-key').setup {}
+        '';
+      }
+      nvim-web-devicons
+      plenary-nvim
+      nui-nvim
+      {
+        plugin = neo-tree-nvim;
+        type = "lua";
+        config = ''
+          require('neo-tree').setup {}
+          vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { silent = true })
+        '';
+      }
+    ];
   };
 }
