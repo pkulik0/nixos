@@ -26,7 +26,7 @@
     go
     python3
     rust-bin.nightly.latest.default
-    zig
+    zigpkgs.master
   ];
 
   programs.zsh = {
