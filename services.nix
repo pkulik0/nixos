@@ -4,6 +4,7 @@
     postgresql = {
       enable = true;
       package = pkgs.postgresql_18;
+      dataDir = "/mnt/postgresql";
       ensureDatabases = [ "pk" "postgres" ];
       ensureUsers = [
         {

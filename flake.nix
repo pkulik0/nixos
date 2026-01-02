@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,11 +30,13 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, ... }:
+  outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, ... }:
     {
       nixosConfigurations.qurrie = nixpkgs.lib.nixosSystem {
         modules = [
           { nixpkgs.hostPlatform = "aarch64-linux"; }
+          disko.nixosModules.disko
+          ./disko.nix
           ./configuration.nix
 
           ({ ... }: {
