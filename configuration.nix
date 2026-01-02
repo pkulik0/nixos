@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./postgres.nix
+    ./services.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
