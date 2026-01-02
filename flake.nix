@@ -27,7 +27,7 @@
 
   outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, ... }:
     {
-      nixosConfigurations.ankara = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.qurrie = nixpkgs.lib.nixosSystem {
         modules = [
           { nixpkgs.hostPlatform = "aarch64-linux"; }
           ./configuration.nix

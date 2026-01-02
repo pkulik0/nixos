@@ -9,7 +9,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "ankara";
+  networking.hostName = "qurrie";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
@@ -51,6 +51,9 @@
     htop
     ripgrep
     unzip
+    dig
+    yq
+    jq
   ];
   environment.variables = {
     TERM = "xterm-256color";
@@ -78,13 +81,9 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 2222 ];
+    allowedTCPPorts = [ 2222 80 443 ];
     allowedUDPPorts = [ 51820 ];
     interfaces.wg0.allowedTCPPorts = [ 5432 6379 4222 8222 8200 9090 9187 9121 7777 ];
-  };
-
-  networking.hosts = {
-    "10.100.0.1" = [ "postgres.wg" "redis.wg" "nats.wg" "vault.wg" "prometheus.wg" ];
   };
 
   networking.wireguard.interfaces = {

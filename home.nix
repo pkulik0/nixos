@@ -52,7 +52,7 @@
       gp = "git push";
       gpf = "git push -f";
 
-      rebuild = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch --flake .#qurrie";
     };
   };
 
