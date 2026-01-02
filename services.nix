@@ -1,5 +1,9 @@
 { pkgs, lib, ... }:
 {
+  systemd.tmpfiles.rules = [
+    "d /mnt/postgresql 0750 postgres postgres -"
+  ];
+
   services = {
     postgresql = {
       enable = true;
