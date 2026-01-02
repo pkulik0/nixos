@@ -35,7 +35,7 @@
   users.users.pk = {
     isNormalUser = true;
     description = "pk";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
     ];
@@ -58,6 +58,12 @@
   };
 
   security.sudo.wheelNeedsPassword = false;
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
+  };
 
   services.openssh = {
     enable = true;
