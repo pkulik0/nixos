@@ -11,18 +11,6 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  # Filesystem declarations - disko should handle this but we need explicit entries
-  fileSystems."/" = {
-    device = "/dev/vda2";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/vda1";
-    fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
-
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "8425e349";  # Required for ZFS, generated randomly
