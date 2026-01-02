@@ -39,21 +39,21 @@
           ./disko.nix
           ./configuration.nix
 
-          ({ ... }: {
+          {
             nixpkgs.overlays = [
               rust-overlay.overlays.default
               zig-overlay.overlays.default
+              (final: prev: {
+                zls = zls-overlay.packages.${prev.stdenv.hostPlatform.system}.default;
+              })
             ];
-          })
+          }
 
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.pk = import ./home.nix;
-            home-manager.extraSpecialArgs = {
-              inherit zls-overlay;
-            };
           }
         ];
       };

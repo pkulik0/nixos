@@ -1,4 +1,4 @@
-{ pkgs, zls-overlay, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     # Language servers
@@ -8,7 +8,7 @@
     gopls
     rust-analyzer
     nil
-    zls-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default
+    zls
     # Formatters
     stylua
     black

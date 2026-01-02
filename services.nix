@@ -22,7 +22,7 @@
       settings = {
         listen_addresses = lib.mkForce "127.0.0.1,10.100.0.1";
       };
-      authentication = pkgs.lib.mkOverride 10 ''
+      authentication = ''
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
         local   all             all                                     trust
         host    all             all             127.0.0.1/32            trust
