@@ -9,12 +9,14 @@
     rust-analyzer
     nil
     zls
+    cmake-language-server
     # Formatters
     stylua
     black
     nodePackages.prettier
     nixpkgs-fmt
     gofumpt
+    cmake-format
     golines
     gomodifytags
     gotests
@@ -110,7 +112,7 @@
           local capabilities = require('blink.cmp').get_lsp_capabilities()
 
           -- Configure LSPs using vim.lsp.config nvim 0.11+
-          local servers = {'lua_ls', 'pyright', 'gopls', 'clangd', 'nil_ls', 'zls'}
+          local servers = {'lua_ls', 'pyright', 'gopls', 'clangd', 'nil_ls', 'zls', 'cmake'}
           for _, server in ipairs(servers) do
             vim.lsp.config[server] = { capabilities = capabilities }
           end
@@ -226,6 +228,7 @@
               typescript = { "prettier" },
               rust = { "rustfmt" },
               nix = { "nixpkgs_fmt" },
+              cmake = { "cmake_format" },
             },
             format_on_save = {
               timeout_ms = 500,
