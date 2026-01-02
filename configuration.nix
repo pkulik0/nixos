@@ -41,7 +41,6 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [ ];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -77,7 +76,36 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 2222 ];
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 2222 ];
+    allowedUDPPorts = [ 51820 ];
+    interfaces.wg0.allowedTCPPorts = [ 5432 6379 4222 8222 8200 9090 9187 9121 7777 ];
+  };
+
+  networking.hosts = {
+    "10.100.0.1" = [ "postgres.wg" "redis.wg" "nats.wg" "vault.wg" "prometheus.wg" ];
+  };
+
+  networking.wireguard.interfaces = {
+    wg0 = {
+      ips = [ "10.100.0.1/24" ];
+      listenPort = 51820;
+      privateKeyFile = "/root/wireguard-keys/private";
+
+      peers = [
+        {
+          # pk
+          publicKey = "B+xqUQ8pwSLrbNpQ6yJeXnZlzsTZGFj8CPIXMh1s7ik=";
+          allowedIPs = [ "10.100.0.2/32" ];
+        }
+      ];
+    };
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1; # For WireGuard
+  };
 
   system.stateVersion = "25.11";
 }
