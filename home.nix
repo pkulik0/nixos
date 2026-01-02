@@ -8,6 +8,7 @@
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
+    jujutsu
     fastfetch
     gh
     claude-code
