@@ -45,15 +45,15 @@
       vim.g.maplocalleader = " "
 
       -- Indentation settings
-      vim.opt.expandtab = true       -- Use spaces instead of tabs
-      vim.opt.shiftwidth = 2         -- Number of spaces for each indentation level
-      vim.opt.tabstop = 2            -- Number of spaces a tab counts for
-      vim.opt.softtabstop = 2        -- Number of spaces for tab key in insert mode
-      vim.opt.smartindent = true     -- Smart autoindenting on new lines
+      vim.opt.expandtab = true       
+      vim.opt.shiftwidth = 2        
+      vim.opt.tabstop = 2          
+      vim.opt.softtabstop = 2     
+      vim.opt.smartindent = true 
 
       -- Line numbers
-      vim.opt.number = true          -- Show absolute line number on current line
-      vim.opt.relativenumber = true  -- Show relative line numbers
+      vim.opt.number = true          
+      vim.opt.relativenumber = true 
     '';
 
     plugins = with pkgs.vimPlugins; [
