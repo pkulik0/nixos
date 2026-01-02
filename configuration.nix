@@ -2,14 +2,18 @@
 
 {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
     ./services.nix
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "virtio_scsi" "usbhid" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  boot.swraid.enable = true;
+  boot.swraid.mdadmConf = ''
+    MAILADDR root
+  '';
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
@@ -17,8 +21,16 @@
 
   swapDevices = [ ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    devices = [ "nodev" ];
+    mirroredBoots = [
+      { devices = [ "/dev/nvme0n1" ]; path = "/boot"; }
+      { devices = [ "/dev/nvme1n1" ]; path = "/boot"; }
+    ];
+  };
 
   networking.hostName = "qurrie";
   networking.networkmanager.enable = true;
