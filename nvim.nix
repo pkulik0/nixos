@@ -8,7 +8,7 @@
     gopls
     rust-analyzer
     nil
-    zls-overlay.packages.${pkgs.system}.default
+    zls-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default
     # Formatters
     stylua
     black

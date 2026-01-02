@@ -11,4 +11,12 @@
       }
     ];
   };
+
+  services.dragonflydb = {
+    enable = true;
+  };
+
+  services.nats = {
+    enable = true;
+  };
 }

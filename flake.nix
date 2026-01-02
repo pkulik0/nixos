@@ -28,9 +28,8 @@
   outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, ... }:
     {
       nixosConfigurations.ankara = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-
         modules = [
+          { nixpkgs.hostPlatform = "aarch64-linux"; }
           ./configuration.nix
 
           ({ ... }: {
