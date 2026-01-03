@@ -116,6 +116,12 @@
           for _, server in ipairs(servers) do
             vim.lsp.config[server] = { capabilities = capabilities }
           end
+
+          vim.lsp.config.clangd = {
+            capabilities = capabilities,
+            cmd = { 'clangd', '--compile-commands-dir=build' },
+          }
+
           vim.lsp.enable(servers)
 
           vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
