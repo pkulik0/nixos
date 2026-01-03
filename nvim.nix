@@ -54,8 +54,16 @@
       vim.opt.smartindent = true 
 
       -- Line numbers
-      vim.opt.number = true          
-      vim.opt.relativenumber = true 
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+
+      vim.filetype.add({
+        extension = {
+          ixx = 'cpp',
+          cppm = 'cpp',
+          ccm = 'cpp',
+        }
+      })
     '';
 
     plugins = with pkgs.vimPlugins; [
