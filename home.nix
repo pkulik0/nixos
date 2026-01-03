@@ -8,7 +8,7 @@
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
-    jujutsu
+    direnv
     fastfetch
     gh
     claude-code
