@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -17,7 +17,7 @@
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
-  networking.hostId = "8425e349";  # Required for ZFS, generated randomly
+  networking.hostId = "8425e349"; # Required for ZFS, generated randomly
 
   swapDevices = [ ];
 
@@ -77,6 +77,7 @@
     dig
     yq
     jq
+    icu
   ];
   environment.variables = {
     TERM = "xterm-256color";
