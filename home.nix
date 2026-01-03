@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -8,11 +8,20 @@
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
-    gnumake
     fastfetch
+
     gh
     claude-code
+
+    gnumake
     pkg-config
+
+    mdbook
+    mdbook-mermaid
+
+    # Secret management
+    sops
+    age
 
     # Programming languages & tools
     ## JS / TS
@@ -85,5 +94,15 @@
 
   programs.tmux = {
     enable = true;
+  };
+
+  # Enable systemd user services (required by sops-nix)
+  systemd.user.startServices = "sd-switch";
+
+  # sops configuration
+  sops = {
+    age.keyFile = "/home/pk/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets.yaml;
+    secrets.anthropic_api_key = {};
   };
 }

@@ -28,9 +28,14 @@
       url = "github:zigtools/zls";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, ... }:
+  outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, sops-nix, ... }:
     {
       nixosConfigurations.qurrie = nixpkgs.lib.nixosSystem {
         modules = [
@@ -54,6 +59,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.pk = import ./home.nix;
+            home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
           }
         ];
       };

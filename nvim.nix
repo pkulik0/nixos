@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     # Language servers
@@ -40,6 +40,11 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    extraWrapperArgs = [
+      "--run"
+      "export ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.anthropic_api_key.path} 2>/dev/null || true)"
+    ];
 
     extraLuaConfig = ''
       -- Leader
@@ -162,7 +167,36 @@
               ['<CR>'] = { 'accept', 'fallback' },
               ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
               ['<C-e>'] = { 'hide', 'fallback' },
-            }
+            },
+            sources = {
+              default = { 'lsp', 'path', 'snippets', 'buffer', 'minuet' },
+              providers = {
+                minuet = {
+                  name = 'minuet',
+                  module = 'minuet.blink',
+                  score_offset = 8,
+                },
+              },
+            },
+          }
+        '';
+      }
+      {
+        plugin = minuet-ai-nvim;
+        type = "lua";
+        config = ''
+          require('minuet').setup {
+            provider = 'claude',
+            provider_options = {
+              claude = {
+                model = 'claude-haiku-4.5',
+                max_tokens = 512,
+              },
+            },
+            -- Enable AI completions
+            n_completions = 3,
+            -- Optional: Add custom keybindings
+            -- default_keymaps = true,
           }
         '';
       }
