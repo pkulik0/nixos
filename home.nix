@@ -8,10 +8,12 @@
   home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
+    gnumake
     direnv
     fastfetch
     gh
     claude-code
+    pkg-config
 
     # Programming languages & tools
     ## JS / TS
@@ -23,12 +25,19 @@
     clang
     ninja
     cmake
+    vcpkg
     ## Others
     go
     python3
     rust-bin.nightly.latest.default
     zigpkgs.master
   ];
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    TERM = "xterm-256color";
+    VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
+  };
 
   programs.zsh = {
     enable = true;
