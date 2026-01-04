@@ -1,5 +1,11 @@
 { pkgs, config, ... }:
 
+let
+  rust = pkgs.rust-bin.nightly.latest.default.override {
+    extensions = [ "rust-src" "rust-analyzer" ];
+  };
+  zig = pkgs.zigpkgs.master;
+in
 {
   imports = [
     ./nvim.nix
@@ -7,7 +13,7 @@
 
   home.stateVersion = "25.11";
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs.unstable; [
     fastfetch
 
     gh
@@ -37,8 +43,8 @@
     ## Others
     go
     python3
-    rust-bin.nightly.latest.default
-    zigpkgs.master
+    rust
+    zig
   ];
 
   home.sessionVariables = {

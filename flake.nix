@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     disko = {
       url = "github:nix-community/disko";
@@ -35,7 +36,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, sops-nix, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, sops-nix, ... }:
     {
       nixosConfigurations.qurrie = nixpkgs.lib.nixosSystem {
         modules = [
@@ -50,6 +51,10 @@
               zig-overlay.overlays.default
               (final: prev: {
                 zls = zls-overlay.packages.${prev.stdenv.hostPlatform.system}.default;
+                unstable = import nixpkgs-unstable {
+                  system = prev.stdenv.hostPlatform.system;
+                  config.allowUnfree = true;
+                };
               })
             ];
           }

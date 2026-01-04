@@ -1,12 +1,11 @@
 { pkgs, config, ... }:
 {
-  home.packages = with pkgs; [
+  home.packages = with pkgs.unstable; [
     # Language servers
     clang-tools
     lua-language-server
     pyright
     gopls
-    rust-analyzer
     nil
     zls
     cmake-language-server
@@ -174,9 +173,13 @@
                 minuet = {
                   name = 'minuet',
                   module = 'minuet.blink',
-                  score_offset = 8,
+                  score_offset = 10,  -- Increased to rank higher
+                  async = true,
                 },
               },
+            },
+            appearance = {
+              use_nvim_cmp_as_default = true,
             },
           }
         '';
@@ -189,14 +192,26 @@
             provider = 'claude',
             provider_options = {
               claude = {
-                model = 'claude-haiku-4.5',
+                model = 'claude-haiku-4-5',
                 max_tokens = 512,
               },
             },
-            -- Enable AI completions
-            n_completions = 3,
-            -- Optional: Add custom keybindings
-            -- default_keymaps = true,
+            n_completions = 1,  -- For inline, usually 1 is enough
+            throttle = 1000,
+            debounce = 500,
+            auto_trigger = true,
+            notify = 'verbose',
+            -- Enable inline ghost text
+            virtualtext = {
+              auto_trigger_ft = {
+                'python', 'lua', 'javascript', 'typescript', 'rust', 'go',
+                'c', 'cpp', 'nix', 'sh', 'bash', 'zsh'
+              },
+              keymap = {
+                accept = '<Tab>',  -- Accept suggestion
+                accept_line = '<C-l>',  -- Accept one line
+              },
+            },
           }
         '';
       }
@@ -438,7 +453,7 @@
           -- Python
           dap.adapters.python = {
             type = 'executable',
-            command = '${pkgs.python3Packages.debugpy}/bin/python',
+            command = '${pkgs.unstable.python3Packages.debugpy}/bin/python',
             args = { '-m', 'debugpy.adapter' },
           }
           dap.configurations.python = {
@@ -447,7 +462,7 @@
               request = 'launch',
               name = 'Launch file',
               program = "''${file}",
-              pythonPath = '${pkgs.python3}/bin/python',
+              pythonPath = '${pkgs.unstable.python3}/bin/python',
             },
           }
 
@@ -457,7 +472,7 @@
             host = 'localhost',
             port = "''${port}",
             executable = {
-              command = '${pkgs.vscode-js-debug}/bin/js-debug',
+              command = '${pkgs.unstable.vscode-js-debug}/bin/js-debug',
               args = { "''${port}" },
             },
           }
@@ -477,7 +492,7 @@
               name = 'Launch file',
               program = "''${file}",
               cwd = "''${workspaceFolder}",
-              runtimeExecutable = '${pkgs.nodejs}/bin/node',
+              runtimeExecutable = '${pkgs.unstable.nodejs}/bin/node',
               runtimeArgs = { '-r', 'ts-node/register' },
             },
           }
@@ -485,7 +500,7 @@
           -- C/C++/Rust
           dap.adapters.lldb = {
             type = 'executable',
-            command = '${pkgs.lldb}/bin/lldb-dap',
+            command = '${pkgs.unstable.lldb}/bin/lldb-dap',
             name = 'lldb',
           }
           dap.configurations.c = {
