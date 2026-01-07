@@ -1,10 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, mistral, ... }:
 
 let
   rust = pkgs.rust-bin.nightly.latest.default.override {
     extensions = [ "rust-src" "rust-analyzer" ];
   };
   zig = pkgs.zigpkgs.master;
+  mistral-vibe = mistral.packages.${pkgs.system}.default;
 in
 {
   imports = [
@@ -18,6 +19,8 @@ in
 
     gh
     claude-code
+    gemini-cli
+    mistral-vibe
 
     gnumake
     pkg-config
@@ -40,6 +43,7 @@ in
     ninja
     cmake
     vcpkg
+    mold
     ## Others
     go
     python3
@@ -109,6 +113,6 @@ in
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
-    secrets.anthropic_api_key = {};
+    secrets.anthropic_api_key = { };
   };
 }
