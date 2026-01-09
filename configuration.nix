@@ -32,7 +32,7 @@
     ];
   };
 
-  networking.hostName = "qurrie";
+  networking.hostName = "kulik";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
@@ -78,6 +78,7 @@
     yq
     jq
     icu
+    opentofu
   ];
   environment.variables = {
     TERM = "xterm-256color";
@@ -85,6 +86,9 @@
   };
 
   security.sudo.wheelNeedsPassword = false;
+
+  # sops configuration for system secrets
+  sops.age.keyFile = "/root/.config/sops/age/keys.txt";
 
   virtualisation.podman = {
     enable = true;
@@ -106,28 +110,6 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 2222 80 443 ];
-    allowedUDPPorts = [ 51820 ];
-    interfaces.wg0.allowedTCPPorts = [ 5432 6379 4222 8222 8200 9090 9187 9121 7777 ];
-  };
-
-  networking.wireguard.interfaces = {
-    wg0 = {
-      ips = [ "10.100.0.1/24" ];
-      listenPort = 51820;
-      privateKeyFile = "/root/wireguard-keys/private";
-
-      peers = [
-        {
-          # pk
-          publicKey = "B+xqUQ8pwSLrbNpQ6yJeXnZlzsTZGFj8CPIXMh1s7ik=";
-          allowedIPs = [ "10.100.0.2/32" ];
-        }
-      ];
-    };
-  };
-
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = 1; # For WireGuard
   };
 
   system.stateVersion = "25.11";

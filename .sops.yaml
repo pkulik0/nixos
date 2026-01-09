@@ -5,3 +5,7 @@ creation_rules:
     key_groups:
       - age:
           - *pk
+  - path_regex: secrets/.*\.json$
+    key_groups:
+      - age:
+          - *pk

@@ -44,6 +44,7 @@ in
     cmake
     vcpkg
     mold
+    llvm
     ## Others
     go
     python3
@@ -79,7 +80,7 @@ in
       gp = "git push";
       gpf = "git push -f";
 
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#qurrie";
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#kulik";
     };
   };
 
@@ -106,10 +107,7 @@ in
     enable = true;
   };
 
-  # Enable systemd user services (required by sops-nix)
   systemd.user.startServices = "sd-switch";
-
-  # sops configuration
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;

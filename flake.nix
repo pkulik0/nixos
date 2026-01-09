@@ -43,10 +43,11 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, sops-nix, mistral, ... }:
     {
-      nixosConfigurations.qurrie = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.kulik = nixpkgs.lib.nixosSystem {
         modules = [
           { nixpkgs.hostPlatform = "x86_64-linux"; }
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
           ./disko.nix
           ./configuration.nix
 

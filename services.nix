@@ -1,5 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
+  sops.secrets.cloudflared-credentials = {
+    sopsFile = ./secrets/cloudflared.json;
+    format = "binary";
+  };
   systemd.tmpfiles.rules = [
     "d /mnt/postgresql 0750 postgres postgres -"
   ];
@@ -20,14 +24,13 @@
         }
       ];
       settings = {
-        listen_addresses = lib.mkForce "127.0.0.1,10.100.0.1";
+        listen_addresses = lib.mkForce "127.0.0.1";
       };
       authentication = ''
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
         local   all             all                                     trust
         host    all             all             127.0.0.1/32            trust
         host    all             all             ::1/128                 trust
-        host    all             all             10.100.0.0/24           trust
       '';
     };
 
@@ -35,7 +38,7 @@
       servers."" = {
         enable = true;
         port = 6379;
-        bind = "127.0.0.1 10.100.0.1";
+        bind = "127.0.0.1";
         settings = {
           protected-mode = "no";
         };
@@ -127,6 +130,20 @@
           }];
         }
       ];
+    };
+
+    cloudflared = {
+      enable = true;
+      tunnels = {
+        "kulik" = {
+          credentialsFile = config.sops.secrets.cloudflared-credentials.path;
+          default = "http_status:404";
+          ingress = {
+            "vault.kulik.sh" = "http://localhost:8200";
+            "prom.kulik.sh" = "http://localhost:9090";
+          };
+        };
+      };
     };
   };
 }
