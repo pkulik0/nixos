@@ -13,7 +13,7 @@
     stylua
     black
     nodePackages.prettier
-    nixpkgs-fmt
+    nixfmt
     gofumpt
     cmake-format
     golines
@@ -290,7 +290,7 @@
               javascript = { "prettier" },
               typescript = { "prettier" },
               rust = { "rustfmt" },
-              nix = { "nixpkgs_fmt" },
+              nix = { "nixfmt" },
               cmake = { "cmake_format" },
             },
             format_on_save = {

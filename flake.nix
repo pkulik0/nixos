@@ -49,7 +49,7 @@
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
           ./disko.nix
-          ./configuration.nix
+          ./system.nix
 
           {
             nixpkgs.overlays = [
@@ -70,7 +70,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit mistral; };
-            home-manager.users.pk = import ./home.nix;
+            home-manager.users.pk = import ./home;
             home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
           }
         ];

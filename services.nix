@@ -1,9 +1,5 @@
 { pkgs, lib, config, ... }:
 {
-  sops.secrets.cloudflared-credentials = {
-    sopsFile = ./secrets/cloudflared.json;
-    format = "binary";
-  };
   systemd.tmpfiles.rules = [
     "d /mnt/postgresql 0750 postgres postgres -"
   ];
@@ -72,7 +68,6 @@
 
     prometheus = {
       enable = true;
-      package = pkgs.prometheus;
       listenAddress = "0.0.0.0";
       port = 9090;
       exporters = {
@@ -132,6 +127,46 @@
       ];
     };
 
+    grafana = {
+      enable = true;
+      declarativePlugins = with pkgs.grafanaPlugins; [
+        redis-datasource
+      ];
+      settings = {
+        server = {
+          http_addr = "127.0.0.1";
+          http_port = 3000;
+        };
+        security = {
+          admin_user = "pk";
+          admin_password = "$__file{${config.sops.secrets.grafana-admin-password.path}}";
+        };
+      };
+      provision.datasources.settings.datasources = [
+        {
+          name = "Prometheus";
+          type = "prometheus";
+          url = "http://127.0.0.1:9090";
+          isDefault = true;
+        }
+        {
+          name = "PostgreSQL";
+          type = "postgres";
+          url = "127.0.0.1:5432";
+          user = "pk";
+          jsonData = {
+            database = "pk";
+            sslmode = "disable";
+          };
+        }
+        {
+          name = "Redis";
+          type = "redis-datasource";
+          url = "127.0.0.1:6379";
+        }
+      ];
+    };
+
     cloudflared = {
       enable = true;
       tunnels = {
@@ -141,6 +176,7 @@
           ingress = {
             "vault.kulik.sh" = "http://localhost:8200";
             "prom.kulik.sh" = "http://localhost:9090";
+            "grafana.kulik.sh" = "http://localhost:3000";
           };
         };
       };

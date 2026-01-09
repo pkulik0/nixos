@@ -24,6 +24,7 @@ in
 
     gnumake
     pkg-config
+    opentofu
 
     mdbook
     mdbook-mermaid
@@ -52,11 +53,7 @@ in
     zig
   ];
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    TERM = "xterm-256color";
-    VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
-  };
+  home.sessionVariables.VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
 
   programs.zsh = {
     enable = true;
@@ -110,7 +107,7 @@ in
   systemd.user.startServices = "sd-switch";
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFile = ../secrets/home.yaml;
     secrets.anthropic_api_key = { };
   };
 }
