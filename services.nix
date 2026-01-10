@@ -166,20 +166,5 @@
         }
       ];
     };
-
-    cloudflared = {
-      enable = true;
-      tunnels = {
-        "kulik" = {
-          credentialsFile = config.sops.secrets.cloudflared-credentials.path;
-          default = "http_status:404";
-          ingress = {
-            "vault.kulik.sh" = "http://localhost:8200";
-            "prom.kulik.sh" = "http://localhost:9090";
-            "grafana.kulik.sh" = "http://localhost:3000";
-          };
-        };
-      };
-    };
   };
 }

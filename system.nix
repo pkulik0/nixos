@@ -40,7 +40,6 @@
     yq
     jq
     icu
-    cloudflared
   ];
   environment.variables.TERM = "xterm-256color";
 
