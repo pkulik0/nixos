@@ -51,6 +51,10 @@ in
     python3
     rust
     zig
+
+    # Solana
+    solana-cli
+    anchor
   ];
 
   home.sessionVariables.VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
