@@ -8,7 +8,7 @@ let
     ];
   };
   zig = pkgs.zigpkgs.master;
-  mistral-vibe = mistral.packages.${pkgs.system}.default;
+  mistral-vibe = mistral.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   imports = [
