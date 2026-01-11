@@ -2,7 +2,10 @@
 
 let
   rust = pkgs.rust-bin.nightly.latest.default.override {
-    extensions = [ "rust-src" "rust-analyzer" ];
+    extensions = [
+      "rust-src"
+      "rust-analyzer"
+    ];
   };
   zig = pkgs.zigpkgs.master;
   mistral-vibe = mistral.packages.${pkgs.system}.default;
@@ -15,28 +18,20 @@ in
   home.stateVersion = "25.11";
 
   home.packages = with pkgs.unstable; [
+    # General
     fastfetch
-
+    # Build tools
+    gnumake
+    pkg-config
+    # CLIs
     gh
     claude-code
     gemini-cli
     mistral-vibe
-
-    gnumake
-    pkg-config
-    opentofu
-
-    mdbook
-    mdbook-mermaid
-
-    # Secret management
-    sops
-    age
-
-    # Programming languages & tools
     ## JS / TS
     nodejs
     pnpm
+    yarn
     bun
     typescript
     ## C/C++
@@ -45,19 +40,29 @@ in
     cmake
     vcpkg
     mold
-    llvm
+    llvmPackages.llvm
     ## Others
     go
     python3
     rust
     zig
-
+    ## Infrastructure
+    opentofu
+    ## Documentation
+    mdbook
+    mdbook-mermaid
     # Solana
     solana-cli
     anchor
+    # Secret management
+    sops
+    age
   ];
 
-  home.sessionVariables.VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
+  home.sessionVariables = {
+    VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
+    CMAKE_PREFIX_PATH = "${pkgs.unstable.llvmPackages.llvm.dev}";
+  };
 
   programs.zsh = {
     enable = true;

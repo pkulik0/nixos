@@ -7,7 +7,10 @@
     ./sops.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   networking.hostName = "kulik";
   networking.networkmanager.enable = true;
@@ -22,7 +25,11 @@
   users.users.pk = {
     isNormalUser = true;
     description = "pk";
-    extraGroups = [ "networkmanager" "wheel" "podman" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "podman"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
     ];

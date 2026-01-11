@@ -41,7 +41,19 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, rust-overlay, zig-overlay, zls-overlay, disko, sops-nix, mistral, ... }:
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      rust-overlay,
+      zig-overlay,
+      zls-overlay,
+      disko,
+      sops-nix,
+      mistral,
+      ...
+    }:
     {
       nixosConfigurations.kulik = nixpkgs.lib.nixosSystem {
         modules = [

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   systemd.tmpfiles.rules = [
     "d /mnt/postgresql 0750 postgres postgres -"
@@ -9,7 +14,10 @@
       enable = true;
       package = pkgs.postgresql_18;
       dataDir = "/mnt/postgresql";
-      ensureDatabases = [ "pk" "postgres" ];
+      ensureDatabases = [
+        "pk"
+        "postgres"
+      ];
       ensureUsers = [
         {
           name = "pk";
@@ -98,21 +106,27 @@
       scrapeConfigs = [
         {
           job_name = "postgres";
-          static_configs = [{
-            targets = [ "127.0.0.1:9187" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:9187" ];
+            }
+          ];
         }
         {
           job_name = "redis";
-          static_configs = [{
-            targets = [ "127.0.0.1:9121" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:9121" ];
+            }
+          ];
         }
         {
           job_name = "nats";
-          static_configs = [{
-            targets = [ "127.0.0.1:7777" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:7777" ];
+            }
+          ];
         }
         {
           job_name = "vault";
@@ -120,9 +134,11 @@
           params = {
             format = [ "prometheus" ];
           };
-          static_configs = [{
-            targets = [ "127.0.0.1:8200" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:8200" ];
+            }
+          ];
         }
       ];
     };
