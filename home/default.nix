@@ -71,17 +71,10 @@ in
     oh-my-zsh = {
       enable = true;
       theme = "alanpeabody";
-      plugins = [
-        "git"
-        "sudo"
-        "podman"
-        "kubectl"
-      ];
     };
 
     shellAliases = {
       e = "exit";
-      c = "clear";
 
       gp = "git push";
       gpf = "git push -f";
@@ -116,7 +109,7 @@ in
   systemd.user.startServices = "sd-switch";
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
-    defaultSopsFile = ../secrets/home.yaml;
+    defaultSopsFile = ../secrets/home.json;
     secrets.anthropic_api_key = { };
   };
 }

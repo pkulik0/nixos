@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
+    ./config.nix
     ./hardware.nix
     ./services.nix
-    ./sops.nix
+    ./secrets.nix
+    ./wireguard.nix
   ];
 
   nix.settings = {
@@ -61,7 +63,7 @@
 
   services.openssh = {
     enable = true;
-    ports = [ 2222 ];
+    ports = [ config.myconfig.ports.ssh ];
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
@@ -69,7 +71,11 @@
       PermitRootLogin = "no";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 2222 ];
+
+  networking.firewall = {
+    allowedUDPPorts = [ config.myconfig.ports.wireguard ];
+    allowedTCPPorts = [ config.myconfig.ports.ssh ];
+  };
 
   system.stateVersion = "25.11";
 }

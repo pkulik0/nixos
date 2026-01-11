@@ -9,7 +9,62 @@
     "d /mnt/postgresql 0750 postgres postgres -"
   ];
 
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "acme@kulik.sh";
+      dnsProvider = "cloudflare";
+      credentialFiles = {
+        "CF_DNS_API_TOKEN_FILE" = config.sops.secrets.cloudflare-dns-api-token.path;
+      };
+    };
+  };
+
   services = {
+    dnsmasq = {
+      enable = true;
+      settings = {
+        interface = "wg0";
+        bind-interfaces = true;
+        address = [
+          "/git.kulik.sh/10.100.0.1"
+          "/grafana.kulik.sh/10.100.0.1"
+          "/vault.kulik.sh/10.100.0.1"
+        ];
+      };
+    };
+
+    nginx = {
+      enable = true;
+      recommendedProxySettings = true;
+      virtualHosts = {
+        "git.kulik.sh" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
+            proxyWebsockets = true;
+          };
+        };
+        "grafana.kulik.sh" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:3000";
+            proxyWebsockets = true;
+          };
+        };
+        "vault.kulik.sh" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:8200";
+            proxyWebsockets = true;
+          };
+        };
+      };
+    };
+
     postgresql = {
       enable = true;
       package = pkgs.postgresql_18;
@@ -165,7 +220,7 @@
       ];
       settings = {
         server = {
-          http_addr = "127.0.0.1";
+          http_addr = "0.0.0.0";
           http_port = 3000;
         };
         security = {
@@ -201,8 +256,8 @@
     gitlab = {
       enable = true;
       host = "git.kulik.sh";
-      port = 443;
-      https = true;
+      port = 80;
+      https = false;
 
       databaseCreateLocally = false;
       databaseHost = "/run/postgresql";
