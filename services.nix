@@ -17,6 +17,7 @@
       ensureDatabases = [
         "pk"
         "postgres"
+        "gitlab"
       ];
       ensureUsers = [
         {
@@ -25,6 +26,10 @@
         }
         {
           name = "postgres-exporter";
+        }
+        {
+          name = "gitlab";
+          ensureDBOwnership = true;
         }
       ];
       settings = {
@@ -140,6 +145,16 @@
             }
           ];
         }
+        {
+          job_name = "gitlab";
+          metrics_path = "/-/metrics";
+          scheme = "http";
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:8080" ];
+            }
+          ];
+        }
       ];
     };
 
@@ -181,6 +196,54 @@
           url = "127.0.0.1:6379";
         }
       ];
+    };
+
+    gitlab = {
+      enable = true;
+      host = "git.kulik.sh";
+      port = 443;
+      https = true;
+
+      databaseCreateLocally = false;
+      databaseHost = "/run/postgresql";
+      databaseName = "gitlab";
+      databaseUsername = "gitlab";
+      databasePasswordFile = config.sops.secrets.gitlab-db-password.path;
+
+      secrets = {
+        secretFile = config.sops.secrets.gitlab-secret.path;
+        otpFile = config.sops.secrets.gitlab-otp.path;
+        dbFile = config.sops.secrets.gitlab-db.path;
+        jwsFile = config.sops.secrets.gitlab-jws.path;
+        activeRecordPrimaryKeyFile = config.sops.secrets.gitlab-ar-primary.path;
+        activeRecordDeterministicKeyFile = config.sops.secrets.gitlab-ar-deterministic.path;
+        activeRecordSaltFile = config.sops.secrets.gitlab-ar-salt.path;
+      };
+      initialRootPasswordFile = config.sops.secrets.gitlab-root-password.path;
+
+      puma = { # web server
+        workers = 2;
+        threadsMin = 1;
+        threadsMax = 4;
+      };
+
+      sidekiq = { # background jobs
+        concurrency = 10;
+      };
+
+      extraConfig = {
+        gitlab = {
+          email_from = "gitlab@kulik.sh";
+          email_display_name = "GitLab";
+          default_projects_features = {
+            issues = true;
+            merge_requests = true;
+            wiki = true;
+            snippets = true;
+            builds = true;
+          };
+        };
+      };
     };
   };
 }
