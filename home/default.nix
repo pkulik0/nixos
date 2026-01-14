@@ -61,7 +61,6 @@ in
 
   home.sessionVariables = {
     VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
-    CMAKE_PREFIX_PATH = "${pkgs.unstable.llvmPackages.llvm.dev}";
   };
 
   programs.zsh = {
@@ -109,7 +108,9 @@ in
   systemd.user.startServices = "sd-switch";
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
-    defaultSopsFile = ../secrets/home.json;
-    secrets.anthropic_api_key = { };
+    defaultSopsFile = ./secrets.yaml;
+    secrets = {
+      anthropic_api_key = { };
+    };
   };
 }

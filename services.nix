@@ -15,7 +15,7 @@
       email = "acme@kulik.sh";
       dnsProvider = "cloudflare";
       credentialFiles = {
-        "CF_DNS_API_TOKEN_FILE" = config.sops.secrets.cloudflare-dns-api-token.path;
+        "CF_DNS_API_TOKEN_FILE" = config.sops.secrets.cloudflare-api-key-dns.path;
       };
     };
   };

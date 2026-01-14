@@ -5,7 +5,7 @@
     ./config.nix
     ./hardware.nix
     ./services.nix
-    ./secrets.nix
+    ./sops.nix
     ./wireguard.nix
   ];
 

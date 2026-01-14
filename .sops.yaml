@@ -1,7 +1,12 @@
 keys:
-  - &pk age1244ypl8fmmv46nl7z6ma7vl4jqx872re3vvszwydrg90zkp5ngms3tl27z
+  - &root age1g9lxqsf0h5ptcspedutj5thq88f8vc9kg458dd8v7k7umx7ppg9q9xlze7
+  - &pk age1wm2upccs66d9uzmucxrqp87eggxekls70gp34qhxm0js5vd8pyuqzn03mp
 creation_rules:
-  - path_regex: secrets/.*\.(json|yaml)$
+  - path_regex: secrets/.*\.(yml|yaml)$
+    key_groups:
+      - age:
+          - *root
+  - path: home/secrets.yaml
     key_groups:
       - age:
           - *pk
