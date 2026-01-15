@@ -2,7 +2,7 @@ let
   secrets-dir = ./secrets;  
 in
 {
-  sops.age.keyFile = "/root/.config/sops/age/keys.txt";
+  sops.age.keyFile = "/var/lib/sops/keys.txt";
 
   sops.secrets = {
     grafana-admin-password = {
