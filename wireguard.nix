@@ -15,8 +15,8 @@
 
     peers = [
       {
-        publicKey = "ClYvFBBL4H81A5rFeV3fEmuhnFs3fnSi42Ubwqcwu0U=";
-        presharedKey = "3KWv/GPeBwfWP0K/ajiagQYkeUDGf+UnhJUjw9sTLPA=";
+        publicKey = "jTO9rESBPsKPACyzXSTkTK7WxnPGx4aWdq7ddmNebgQ=";
+        presharedKey = "IRf7sXUYElonn29xoz/PsVommmEzjhDInYw0XuBMUfU=";
         allowedIPs = [ "10.100.0.2/32" ];
       }
     ];

@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
+if ! command -v yq &> /dev/null; then
+  echo "yq could not be found"
+  exit 1
+fi
+if ! command -v wg &> /dev/null; then
+  echo "wg could not be found"
+  exit 1
+fi
+
 SERVER_ENDPOINT="kulik.sh:30050"
-SERVER_PUBKEY="$(cat "$(dirname "$0")/../secrets/wireguard-pubkey.txt")"
+SERVER_PUBKEY="$(yq '.public_key_unencrypted' "$(dirname "$0")/../secrets/wireguard.yaml")"
 
 [[ -z "$2" ]] && { echo "Usage: $0 <name> <ip>"; exit 1; }
 
