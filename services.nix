@@ -24,8 +24,15 @@
     dnsmasq = {
       enable = true;
       settings = {
-        interface = "wg0";
+        listen-address = [
+          "127.0.0.1"
+          "10.100.0.1"
+        ];
         bind-interfaces = true;
+        server = [
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
         address = [
           "/git.kulik.sh/10.100.0.1"
           "/grafana.kulik.sh/10.100.0.1"
