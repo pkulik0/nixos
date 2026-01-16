@@ -22,12 +22,17 @@ in
     fastfetch
     # Build tools
     gnumake
+    go-task
     pkg-config
+    bison
+    flex
+    meson
     # CLIs
     gh
     claude-code
     gemini-cli
     mistral-vibe
+    codex
     ## JS / TS
     nodejs
     pnpm
