@@ -34,6 +34,7 @@
 
   networking.firewall = {
     interfaces.wg0.allowedTCPPorts = [
+      22 # SSH for gitolite
       53 # DNS
       80 # HTTP
       443 # HTTPS

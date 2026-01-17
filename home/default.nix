@@ -27,6 +27,7 @@ in
     bison
     flex
     meson
+    devenv
     # CLIs
     gh
     claude-code

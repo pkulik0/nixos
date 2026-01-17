@@ -36,7 +36,7 @@
       "podman"
     ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3Ipi7wCDAg+CkwYoH2zkPTY/ozhMbZd58g7NCnGSnS"
+      config.myconfig.keys.pk
     ];
     shell = pkgs.zsh;
   };
@@ -64,6 +64,10 @@
   services.openssh = {
     enable = true;
     ports = [ config.myconfig.ports.ssh ];
+    listenAddresses = [
+      { addr = "0.0.0.0"; port = config.myconfig.ports.ssh; }
+      { addr = "10.100.0.1"; port = 22; }
+    ];
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;

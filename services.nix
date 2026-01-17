@@ -34,9 +34,7 @@
           "8.8.8.8"
         ];
         address = [
-          "/git.kulik.sh/10.100.0.1"
-          "/grafana.kulik.sh/10.100.0.1"
-          "/vault.kulik.sh/10.100.0.1"
+          "/kulik.sh/10.100.0.1"
         ];
       };
     };
@@ -48,14 +46,12 @@
         "git.kulik.sh" = {
           forceSSL = true;
           enableACME = true;
-          locations."/" = {
-            proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
-            proxyWebsockets = true;
-          };
+          acmeRoot = null;
         };
         "grafana.kulik.sh" = {
           forceSSL = true;
           enableACME = true;
+          acmeRoot = null;
           locations."/" = {
             proxyPass = "http://127.0.0.1:3000";
             proxyWebsockets = true;
@@ -64,6 +60,7 @@
         "vault.kulik.sh" = {
           forceSSL = true;
           enableACME = true;
+          acmeRoot = null;
           locations."/" = {
             proxyPass = "http://127.0.0.1:8200";
             proxyWebsockets = true;
@@ -79,7 +76,6 @@
       ensureDatabases = [
         "pk"
         "postgres"
-        "gitlab"
       ];
       ensureUsers = [
         {
@@ -88,10 +84,6 @@
         }
         {
           name = "postgres-exporter";
-        }
-        {
-          name = "gitlab";
-          ensureDBOwnership = true;
         }
       ];
       settings = {
@@ -207,16 +199,6 @@
             }
           ];
         }
-        {
-          job_name = "gitlab";
-          metrics_path = "/-/metrics";
-          scheme = "http";
-          static_configs = [
-            {
-              targets = [ "127.0.0.1:8080" ];
-            }
-          ];
-        }
       ];
     };
 
@@ -260,51 +242,30 @@
       ];
     };
 
-    gitlab = {
+    gitolite = {
       enable = true;
-      host = "git.kulik.sh";
-      port = 80;
-      https = false;
+      user = "git";
+      group = "git";
+      dataDir = "/var/lib/gitolite";
+      adminPubkey = config.myconfig.keys.pk;
+    };
 
-      databaseCreateLocally = false;
-      databaseHost = "/run/postgresql";
-      databaseName = "gitlab";
-      databaseUsername = "gitlab";
-      databasePasswordFile = config.sops.secrets.gitlab-db-password.path;
-
-      secrets = {
-        secretFile = config.sops.secrets.gitlab-secret.path;
-        otpFile = config.sops.secrets.gitlab-otp.path;
-        dbFile = config.sops.secrets.gitlab-db.path;
-        jwsFile = config.sops.secrets.gitlab-jws.path;
-        activeRecordPrimaryKeyFile = config.sops.secrets.gitlab-ar-primary.path;
-        activeRecordDeterministicKeyFile = config.sops.secrets.gitlab-ar-deterministic.path;
-        activeRecordSaltFile = config.sops.secrets.gitlab-ar-salt.path;
-      };
-      initialRootPasswordFile = config.sops.secrets.gitlab-root-password.path;
-
-      puma = { # web server
-        workers = 2;
-        threadsMin = 1;
-        threadsMax = 4;
-      };
-
-      sidekiq = { # background jobs
-        concurrency = 10;
-      };
-
-      extraConfig = {
-        gitlab = {
-          email_from = "gitlab@kulik.sh";
-          email_display_name = "GitLab";
-          default_projects_features = {
-            issues = true;
-            merge_requests = true;
-            wiki = true;
-            snippets = true;
-            builds = true;
-          };
-        };
+    cgit.main = {
+      enable = true;
+      user = "git";
+      group = "git";
+      scanPath = "/var/lib/gitolite/repositories";
+      nginx.virtualHost = "git.kulik.sh";
+      settings = {
+        root-title = "Git Repositories";
+        root-desc = "kulik.sh git repos";
+        clone-url = "git@git.kulik.sh:$CGIT_REPO_URL";
+        enable-index-links = 1;
+        enable-log-filecount = 1;
+        enable-log-linecount = 1;
+        enable-git-config = 1;
+        remove-suffix = 1;
+        enable-commit-graph = 1;
       };
     };
   };
