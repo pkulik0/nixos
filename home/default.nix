@@ -1,4 +1,9 @@
-{ pkgs, mistral, ... }:
+{
+  pkgs,
+  lib,
+  mistral,
+  ...
+}:
 
 let
   rust = pkgs.rust-bin.nightly.latest.default.override {
@@ -28,6 +33,9 @@ in
     flex
     meson
     devenv
+    buf
+    openssl
+    pkg-config
     # CLIs
     gh
     claude-code
@@ -41,7 +49,8 @@ in
     bun
     typescript
     ## C/C++
-    clang
+    gcc
+    (lib.hiPrio clang)
     ninja
     cmake
     vcpkg
@@ -54,6 +63,7 @@ in
     zig
     ## Infrastructure
     opentofu
+    podman-compose
     ## Documentation
     mdbook
     mdbook-mermaid
@@ -67,7 +77,15 @@ in
 
   home.sessionVariables = {
     VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
+    CC = "clang";
+    CXX = "clang++";
+    OPENSSL_LIB_DIR = "${pkgs.unstable.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgs.unstable.openssl.dev}/include";
   };
+
+  home.sessionPath = [
+    "$HOME/go/bin"
+  ];
 
   programs.zsh = {
     enable = true;
