@@ -36,6 +36,7 @@ in
     buf
     openssl
     pkg-config
+    sqlc
     # CLIs
     gh
     claude-code
