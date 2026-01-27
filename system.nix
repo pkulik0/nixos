@@ -4,7 +4,6 @@
   imports = [
     ./config.nix
     ./hardware.nix
-    ./services.nix
     ./sops.nix
     ./wireguard.nix
   ];

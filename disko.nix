@@ -100,15 +100,6 @@
           acltype = "posixacl";
         };
         datasets = {
-          "postgresql" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/postgresql";
-            options = {
-              recordsize = "16K"; # Match PostgreSQL page size
-              primarycache = "metadata"; # Let PostgreSQL handle data caching
-              logbias = "latency";
-            };
-          };
         };
       };
     };

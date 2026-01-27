@@ -34,15 +34,7 @@
 
   networking.firewall = {
     interfaces.wg0.allowedTCPPorts = [
-      22 # SSH for gitolite
-      53 # DNS
-      80 # HTTP
-      443 # HTTPS
-      3000 # Grafana
-      8200 # Vault
-    ];
-    interfaces.wg0.allowedUDPPorts = [
-      53 # DNS
+      config.myconfig.ports.ssh  # SSH access through VPN (port 2222)
     ];
   };
 }
