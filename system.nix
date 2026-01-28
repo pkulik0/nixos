@@ -6,6 +6,7 @@
     ./hardware.nix
     ./sops.nix
     ./wireguard.nix
+    ./k3s.nix
   ];
 
   nix.settings = {
