@@ -25,6 +25,7 @@ in
   home.packages = with pkgs.unstable; [
     # General
     fastfetch
+    glow
     # Build tools
     gnumake
     go-task
