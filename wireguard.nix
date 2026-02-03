@@ -32,9 +32,8 @@
     '';
   };
 
-  networking.firewall = {
-    interfaces.wg0.allowedTCPPorts = [
-      config.myconfig.ports.ssh  # SSH access through VPN (port 2222)
-    ];
-  };
+  networking.firewall.interfaces.wg0.allowedTCPPorts = [
+    config.myconfig.ports.ssh  # SSH access through VPN
+    config.myconfig.ports.k3s  # k3s API server
+  ];
 }

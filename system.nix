@@ -6,7 +6,6 @@
     ./hardware.nix
     ./sops.nix
     ./wireguard.nix
-    ./k3s.nix
   ];
 
   nix.settings = {
@@ -74,6 +73,12 @@
       X11Forwarding = false;
       PermitRootLogin = "no";
     };
+  };
+
+  services.k3s = {
+    enable = true;
+    role = "server";
+    tokenFile = config.sops.secrets.k3s-token.path;
   };
 
   networking.firewall = {

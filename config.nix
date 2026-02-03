@@ -13,6 +13,11 @@
         default = 30050;
         description = "WireGuard port";
       };
+      k3s = lib.mkOption {
+        type = lib.types.port;
+        default = 6443;
+        description = "k3s API server port";
+      };
     };
     keys = {
       pk = lib.mkOption {
