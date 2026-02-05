@@ -32,8 +32,14 @@
     '';
   };
 
-  networking.firewall.interfaces.wg0.allowedTCPPorts = [
-    config.myconfig.ports.ssh  # SSH access through VPN
-    config.myconfig.ports.k3s  # k3s API server
-  ];
+  networking.firewall.interfaces.wg0 = {
+    allowedTCPPorts = [
+      53  # DNS
+      config.myconfig.ports.ssh  # SSH access through VPN
+      config.myconfig.ports.k3s  # k3s API server
+    ];
+    allowedUDPPorts = [
+      53  # DNS
+    ];
+  };
 }

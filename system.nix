@@ -75,6 +75,21 @@
     };
   };
 
+  services.dnsmasq = {
+    enable = true;
+    settings = {
+      listen-address = [
+        "127.0.0.1"
+        "10.100.0.1"
+      ];
+      bind-interfaces = true;
+      server = [
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
+    };
+  };
+
   services.k3s = {
     enable = true;
     role = "server";
