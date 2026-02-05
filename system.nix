@@ -79,6 +79,9 @@
     enable = true;
     role = "server";
     tokenFile = config.sops.secrets.k3s-token.path;
+    extraFlags = toString [
+      "--tls-san" "10.100.0.1"
+    ];
   };
 
   networking.firewall = {
