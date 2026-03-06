@@ -11,7 +11,7 @@ if ! command -v wg &> /dev/null; then
 fi
 
 SERVER_ENDPOINT="kulik.sh:30050"
-SERVER_PUBKEY="$(yq '.public_key_unencrypted' "$(dirname "$0")/../secrets/wireguard.yaml")"
+SERVER_PUBKEY="$(yq '.wireguard_public_key_unencrypted' "$(dirname "$0")/../secrets.yaml")"
 
 [[ -z "$2" ]] && { echo "Usage: $0 <name> <ip>"; exit 1; }
 

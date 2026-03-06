@@ -134,7 +134,7 @@ in
   systemd.user.startServices = "sd-switch";
   sops = {
     age.keyFile = "/home/pk/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFile = ../secrets.yaml;
     secrets = {
       anthropic_api_key = { };
     };

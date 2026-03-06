@@ -1,17 +1,14 @@
-let
-  secrets-dir = ./secrets;
-in
 {
   sops.age.keyFile = "/var/lib/sops/keys.txt";
 
+  sops.defaultSopsFile = ./secrets.yaml;
+
   sops.secrets = {
     wireguard-private-key = {
-      sopsFile = "${secrets-dir}/wireguard.yaml";
-      key = "private_key";
+      key = "wireguard_private_key";
     };
     k3s-token = {
-      sopsFile = "${secrets-dir}/k3s.yaml";
-      key = "token";
+      key = "k3s_token";
     };
   };
 }

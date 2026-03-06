@@ -7,7 +7,7 @@ Personal NixOS configuration with GitLab, Grafana, Vault, and WireGuard VPN.
 ```bash
 
 # Run 
-nix run github:nix-community/nixos-anywhere -- --flake .#kulik \
+nix run github:nix-community/nixos-anywhere -- --flake .#mini \
                                                --extra-files ./extra-files \
                                                --build-on-remote \
                                                --target-host <user>@<ip>
