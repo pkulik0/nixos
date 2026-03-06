@@ -16,7 +16,7 @@
     download-buffer-size = 512 * 1024 * 1024; # 512 MiB
   };
 
-  networking.hostName = "kulik";
+  networking.hostName = "mini";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
@@ -64,8 +64,14 @@
     enable = true;
     ports = [ config.myconfig.ports.ssh ];
     listenAddresses = [
-      { addr = "0.0.0.0"; port = config.myconfig.ports.ssh; }
-      { addr = "10.100.0.1"; port = 22; }
+      {
+        addr = "0.0.0.0";
+        port = config.myconfig.ports.ssh;
+      }
+      {
+        addr = "10.100.0.1";
+        port = 22;
+      }
     ];
     settings = {
       PasswordAuthentication = false;
@@ -95,7 +101,8 @@
     role = "server";
     tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString [
-      "--tls-san" "10.100.0.1"
+      "--tls-san"
+      "10.100.0.1"
     ];
   };
 

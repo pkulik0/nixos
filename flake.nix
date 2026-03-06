@@ -55,7 +55,7 @@
       ...
     }:
     {
-      nixosConfigurations.kulik = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.mini = nixpkgs.lib.nixosSystem {
         modules = [
           { nixpkgs.hostPlatform = "x86_64-linux"; }
           disko.nixosModules.disko
