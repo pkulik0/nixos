@@ -1,6 +1,6 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
-  home.packages = with pkgs.unstable; [
+  home.packages = with pkgs; [
     # Language servers
     clang-tools
     lua-language-server
@@ -40,12 +40,7 @@
     viAlias = true;
     vimAlias = true;
 
-    extraWrapperArgs = [
-      "--run"
-      "export ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.anthropic_api_key.path} 2>/dev/null || true)"
-    ];
-
-    extraLuaConfig = ''
+    initLua = ''
       -- Leader
       vim.g.mapleader = " "
       vim.g.maplocalleader = " "
@@ -168,49 +163,10 @@
               ['<C-e>'] = { 'hide', 'fallback' },
             },
             sources = {
-              default = { 'lsp', 'path', 'snippets', 'buffer', 'minuet' },
-              providers = {
-                minuet = {
-                  name = 'minuet',
-                  module = 'minuet.blink',
-                  score_offset = 10,  -- Increased to rank higher
-                  async = true,
-                },
-              },
+              default = { 'lsp', 'path', 'snippets', 'buffer' },
             },
             appearance = {
               use_nvim_cmp_as_default = true,
-            },
-          }
-        '';
-      }
-      {
-        plugin = minuet-ai-nvim;
-        type = "lua";
-        config = ''
-          require('minuet').setup {
-            provider = 'claude',
-            provider_options = {
-              claude = {
-                model = 'claude-haiku-4-5',
-                max_tokens = 512,
-              },
-            },
-            n_completions = 1,  -- For inline, usually 1 is enough
-            throttle = 1000,
-            debounce = 500,
-            auto_trigger = true,
-            notify = 'verbose',
-            -- Enable inline ghost text
-            virtualtext = {
-              auto_trigger_ft = {
-                'python', 'lua', 'javascript', 'typescript', 'rust', 'go',
-                'c', 'cpp', 'nix', 'sh', 'bash', 'zsh'
-              },
-              keymap = {
-                accept = '<Tab>',  -- Accept suggestion
-                accept_line = '<C-l>',  -- Accept one line
-              },
             },
           }
         '';
@@ -453,7 +409,7 @@
           -- Python
           dap.adapters.python = {
             type = 'executable',
-            command = '${pkgs.unstable.python3Packages.debugpy}/bin/python',
+            command = '${pkgs.python3Packages.debugpy}/bin/python',
             args = { '-m', 'debugpy.adapter' },
           }
           dap.configurations.python = {
@@ -462,7 +418,7 @@
               request = 'launch',
               name = 'Launch file',
               program = "''${file}",
-              pythonPath = '${pkgs.unstable.python3}/bin/python',
+              pythonPath = '${pkgs.python3}/bin/python',
             },
           }
 
@@ -472,7 +428,7 @@
             host = 'localhost',
             port = "''${port}",
             executable = {
-              command = '${pkgs.unstable.vscode-js-debug}/bin/js-debug',
+              command = '${pkgs.vscode-js-debug}/bin/js-debug',
               args = { "''${port}" },
             },
           }
@@ -492,7 +448,7 @@
               name = 'Launch file',
               program = "''${file}",
               cwd = "''${workspaceFolder}",
-              runtimeExecutable = '${pkgs.unstable.nodejs}/bin/node',
+              runtimeExecutable = '${pkgs.nodejs}/bin/node',
               runtimeArgs = { '-r', 'ts-node/register' },
             },
           }
@@ -500,7 +456,7 @@
           -- C/C++/Rust
           dap.adapters.lldb = {
             type = 'executable',
-            command = '${pkgs.unstable.lldb}/bin/lldb-dap',
+            command = '${pkgs.lldb}/bin/lldb-dap',
             name = 'lldb',
           }
           dap.configurations.c = {

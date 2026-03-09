@@ -22,24 +22,25 @@
     ];
 
     # Set up NAT after the interface is created
+    # Use wlan+ wildcard to match any wireless interface name
     postSetup = ''
-      ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o eno1 -j MASQUERADE
+      ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o wl+ -j MASQUERADE
     '';
 
     # Clean up NAT when interface goes down
     postShutdown = ''
-      ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o eno1 -j MASQUERADE || true
+      ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o wl+ -j MASQUERADE || true
     '';
   };
 
   networking.firewall.interfaces.wg0 = {
     allowedTCPPorts = [
-      53  # DNS
-      config.myconfig.ports.ssh  # SSH access through VPN
-      config.myconfig.ports.k3s  # k3s API server
+      53 # DNS
+      config.myconfig.ports.ssh # SSH access through VPN
+      config.myconfig.ports.k3s # k3s API server
     ];
     allowedUDPPorts = [
-      53  # DNS
+      53 # DNS
     ];
   };
 }

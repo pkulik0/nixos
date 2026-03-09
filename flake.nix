@@ -2,8 +2,7 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     disko = {
       url = "github:nix-community/disko";
@@ -11,7 +10,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -37,14 +36,13 @@
 
     mistral = {
       url = "github:mistralai/mistral-vibe";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
     {
       nixpkgs,
-      nixpkgs-unstable,
       home-manager,
       rust-overlay,
       zig-overlay,
@@ -69,10 +67,6 @@
               zig-overlay.overlays.default
               (final: prev: {
                 zls = zls-overlay.packages.${prev.stdenv.hostPlatform.system}.default;
-                unstable = import nixpkgs-unstable {
-                  system = prev.stdenv.hostPlatform.system;
-                  config.allowUnfree = true;
-                };
               })
             ];
           }

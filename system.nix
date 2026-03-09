@@ -5,6 +5,7 @@
     ./config.nix
     ./hardware.nix
     ./sops.nix
+    ./wifi.nix
     ./wireguard.nix
   ];
 
@@ -17,7 +18,6 @@
   };
 
   networking.hostName = "mini";
-  networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -30,7 +30,6 @@
     isNormalUser = true;
     description = "pk";
     extraGroups = [
-      "networkmanager"
       "wheel"
       "podman"
     ];

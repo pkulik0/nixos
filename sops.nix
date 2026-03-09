@@ -10,5 +10,8 @@
     k3s-token = {
       key = "k3s_token";
     };
+    wifi-password = {
+      key = "wifi_password";
+    };
   };
 }

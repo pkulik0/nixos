@@ -22,7 +22,7 @@ in
 
   home.stateVersion = "25.11";
 
-  home.packages = with pkgs.unstable; [
+  home.packages = with pkgs; [
     # General
     fastfetch
     glow
@@ -81,8 +81,8 @@ in
     VCPKG_ROOT = "${pkgs.vcpkg}/share/vcpkg";
     CC = "clang";
     CXX = "clang++";
-    OPENSSL_LIB_DIR = "${pkgs.unstable.openssl.out}/lib";
-    OPENSSL_INCLUDE_DIR = "${pkgs.unstable.openssl.dev}/include";
+    OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
   };
 
   home.sessionPath = [
