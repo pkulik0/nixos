@@ -29,6 +29,7 @@
   users.users.pk = {
     isNormalUser = true;
     description = "pk";
+    initialHashedPassword = "$6$SIJ1Bhz1/oWSdCQW$A1T2Sg7uvuduYOXbjiDw8T88Bs/RoXOfH7TNjT/.LGG7AjH7oWr9c.D1Dk7BIT68YaYyvVGSsDuQJXNoJa5E.1";
     extraGroups = [
       "wheel"
       "podman"
