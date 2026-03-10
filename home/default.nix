@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  mistral,
   ...
 }:
 
@@ -13,7 +12,6 @@ let
     ];
   };
   zig = pkgs.zigpkgs.master;
-  mistral-vibe = mistral.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   imports = [
@@ -41,9 +39,8 @@ in
     # CLIs
     gh
     claude-code
-    gemini-cli
-    mistral-vibe
     codex
+    opencode
     ## JS / TS
     nodejs
     pnpm
@@ -104,7 +101,7 @@ in
       gp = "git push";
       gpf = "git push -f";
 
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#kulik";
+      rebuild = "sudo nixos-rebuild switch --flake /home/pk/repos/nixos#mini";
     };
   };
 

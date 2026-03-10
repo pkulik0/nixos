@@ -33,11 +33,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    mistral = {
-      url = "github:mistralai/mistral-vibe";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -49,7 +44,6 @@
       zls-overlay,
       disko,
       sops-nix,
-      mistral,
       ...
     }:
     {
@@ -75,7 +69,6 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit mistral; };
             home-manager.users.pk = import ./home;
             home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
           }
