@@ -62,7 +62,7 @@ in
     zig
     ## Infrastructure
     opentofu
-    podman-compose
+    docker-compose
     ## Documentation
     mdbook
     mdbook-mermaid
