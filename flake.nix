@@ -33,6 +33,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs =
@@ -69,6 +70,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+
             home-manager.users.pk = import ./home;
             home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
           }

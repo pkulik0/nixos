@@ -22,14 +22,16 @@
     ];
 
     # Set up NAT after the interface is created
-    # Use wlan+ wildcard to match any wireless interface name
+    # Use wl+ for wireless and en+ for ethernet interfaces
     postSetup = ''
       ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o wl+ -j MASQUERADE
+      ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o en+ -j MASQUERADE
     '';
 
     # Clean up NAT when interface goes down
     postShutdown = ''
       ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o wl+ -j MASQUERADE || true
+      ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o en+ -j MASQUERADE || true
     '';
   };
 

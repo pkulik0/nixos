@@ -39,6 +39,7 @@ in
     # CLIs
     gh
     claude-code
+
     codex
     opencode
     ## JS / TS
