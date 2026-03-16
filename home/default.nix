@@ -119,7 +119,7 @@ in
       };
       gpg.format = "ssh";
       pull.rebase = true;
-      init.defaultBranch = "dev";
+      init.defaultBranch = "main";
       url."ssh://git@github.com/".insteadOf = "https://github.com/";
       push.autoSetupRemote = true;
     };
